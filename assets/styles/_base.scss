@@ -1,0 +1,107 @@
+@use 'variables' as v;
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Roboto+Slab:wght@100..900&display=swap');
+
+body {
+    font-family: "Roboto Slab", sans-serif;
+    margin: 0;
+    background-color: v.$black;
+    color: white;
+}
+a{
+    color: white;
+    text-decoration: none;
+}
+
+    h1,h2,h3{
+        text-align: center;
+        font-family: "Playfair Display SC", serif;
+    }
+// Formulaires (inscription, login, ajout glace)
+.registration-form,
+.login-form {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 6px 12px rgba(243, 156, 18, 0.2);
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    background: v.$colorSecondary;
+}
+
+.registration-form {
+    background: v.$colorSecondary;
+}
+
+.login-form {
+    background: v.$colorSecondary;
+}
+
+.form-title,
+.registration-form h1 {
+    text-align: center;
+    color: v.$colorPrimary;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+
+    label {
+        display: block;
+        margin-bottom: 0.4rem;
+        font-weight: bold;
+        color: v.$colorPrimary;
+    }
+}
+
+.input,
+.select,
+.file-input {
+    width: 100%;
+    padding: 0.6rem;
+    font-size: 1rem;
+    border-radius: 10px;
+    background: v.$colorSecondary;
+    transition: border 0.3s ease;
+    border: 2px solid #f8c291;
+
+    &:focus {
+        border-color: #e59866;
+        outline: none;
+    }
+}
+
+.submit,
+.submit-button {
+    display: block;
+    width: 100%;
+    background-color: v.$colorPrimary;
+    color: white;
+    padding: 0.7rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: v.$grey;
+    }
+}
+
+.alert-error {
+    background-color: v.$colorPrimary;
+    border-left: 5px solid v.$grey;
+    color: white;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.already-logged {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: v.$colorPrimary;
+}

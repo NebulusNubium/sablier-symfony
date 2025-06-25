@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AddPictureController!{% endblock %}
+
+{% block main %}
+    <h1>Ajouter un Sablier</h1>
+    {{ form_start(addPictureForm, {'attr': {'class': 'picture-form'}}) }}
+
+    <div class="form-group">
+        {{ form_label(addPictureForm.nom) }}
+        {{ form_widget(addPictureForm.nom, {'attr': {'class': 'input'}}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(addPictureForm.description) }}
+        {{ form_widget(addPictureForm.description, {'attr': {'class': 'input'}}) }}
+    </div>
+
+
+    <div class="form-group">
+        {{ form_label(addPictureForm.imageFile) }}
+        {{ form_widget(addPictureForm.imageFile, {'attr': {'class': 'file-input'}}) }}
+    </div>
+
+    <button class="submit-button">Ajouter</button>
+
+    {{ form_end(addPictureForm) }}
+{% endblock %}
