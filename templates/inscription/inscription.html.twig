@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello InscriptionController!{% endblock %}
+
+{% block main %}
+    <h1>Inscription</h1>
+
+    {{ form_start(user, {'attr': {'class': 'registration-form'}}) }}
+
+    <div class="form-group">
+        {{ form_label(user.username) }}
+        {{ form_widget(user.username, {'attr': {'class': 'input'}}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(user.password) }}
+        {{ form_widget(user.password, {'attr': {'class': 'input'}}) }}
+    </div>
+
+    <button class="submit">S'inscrire</button>
+
+    {{ form_end(user) }}
+{% endblock %}

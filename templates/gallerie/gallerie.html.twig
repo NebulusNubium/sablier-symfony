@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gallerie{% endblock %}
+
+{% block main %}
+<h1>Notre Collection</h1>
+<p>chaque objet a sa page détaillée en cliquant dessus</p>
+<p>bonus: faire un filtre et un systeme de notation</p>
+{# <section id="liste">
+    {% for glace in glaces %}
+        <div class="card">
+            <h2>{{ glace.nom }}</h2>
+            <p><strong>Type de cône :</strong> {{ glace.cone.coneType }}</p>
+            <p><strong>Le petit truc en plus :</strong> {{ glace.ingredientSpecial }}</p>
+            <p><strong>Les toppings :</strong>
+                {% for topping in glace.topping %}
+                    {{ topping.toppingType }}{% if not loop.last %}, {% endif %}
+                {% else %}
+                    Aucun
+                {% endfor %}
+            </p>
+            <div class="image">
+                <img src="{{ asset('uploads/images/' ~ glace.imageName) }}" alt="img">
+            </div>
+            <div class="actions">
+                <a class="modifier" href="{{ path('updateDessert', {'id': glace.id}) }}">Modifier</a>
+                <form action="{{ path('deleteDessert', {'id': glace.id}) }}" method="post" onsubmit="return confirm('Confirmer la suppression?')">
+                    <input type="hidden" name="_method" value="delete">
+                    <input type="hidden" name="_token" value="{{ csrf_token('SUP' ~ glace.id) }}">
+                    <input type="submit" value="Supprimer" class="supprimer">
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+</section> #}
+
+{% endblock %}
