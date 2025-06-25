@@ -6,28 +6,32 @@
 <h1>Notre Collection</h1>
 <p>chaque objet a sa page détaillée en cliquant dessus</p>
 <p>bonus: faire un filtre et un systeme de notation</p>
-{# <section id="liste">
+<section id="liste">
     {% for picture in pictures %}
         <div class="card">
             <h2>{{ picture.nom }}</h2>
+            <p><strong>Ajouté par :</strong> {{ picture.user.username}}</p>
             <p><strong>Description :</strong> {{ picture.description }}</p>
-            <p><strong>Les toppings :</strong>
-
+            {# <p><strong>Les tags :</strong>
+                {% for tag in picture.tags %}
+                    {{ topping.toppingType }}{% if not loop.last %}, {% endif %}
+                {% else %}
                     Aucun
-                {% endfor %}
+                {% endfor %} #}
             </p>
             <div class="image">
                 <img src="{{ asset('uploads/images/' ~ picture.imageName) }}" alt="img">
             </div>
-            <div class="actions">
+            {# <div class="actions">
                 <a class="modifier" href="{{ path('updateDessert', {'id': picture.id}) }}">Modifier</a>
                 <form action="{{ path('deleteDessert', {'id': picture.id}) }}" method="post" onsubmit="return confirm('Confirmer la suppression?')">
                     <input type="hidden" name="_method" value="delete">
                     <input type="hidden" name="_token" value="{{ csrf_token('SUP' ~ picture.id) }}">
                     <input type="submit" value="Supprimer" class="supprimer">
                 </form>
-            </div>
-        </div> #}
+            </div> #}
+        </div>
+    {% endfor %}
 </section>
 
 {% endblock %}
