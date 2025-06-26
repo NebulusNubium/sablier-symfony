@@ -50,3 +50,17 @@ nav {
         color: #C37A13;
         }
 }
+
+//footer
+footer{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+p>a{
+    border-top: 3px solid v.$black;
+}
+p>a:hover{
+    border-color: v.$colorSecondary;
+    color: v.$colorPrimary;
+}
