@@ -2,16 +2,18 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Pictures;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class DetailController extends AbstractController
 {
-    #[Route('/detail', name: 'detail')]
-    public function index(): Response
+    #[Route('/detail/{id}', name: 'detail')]
+    public function index(Pictures $picture): Response
     {
         return $this->render('detail/detail.html.twig', [
+        'picture'=>$picture,
         ]);
     }
 }

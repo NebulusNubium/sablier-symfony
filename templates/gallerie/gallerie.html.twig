@@ -3,10 +3,19 @@
 {% block title %}Gallerie{% endblock %}
 
 {% block main %}
-<h1>Notre Collection</h1>
-<p>chaque objet a sa page détaillée en cliquant dessus</p>
-<p>bonus: faire un filtre et un systeme de notation</p>
+
 <section id="liste">
+    <div class="gallerie-title">
+        <h1>Notre Collection</h1>
+        <p>chaque objet a sa page détaillée en cliquant dessus</p>
+        <p>bonus: faire un filtre et un systeme de notation</p>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <a href="{{path('addPicture')}}" class="btn-secondary">Ajouter un sablier</a>
+        {% else %}
+            <a href="{{ path('app_login') }}" class="btn-secondary">Se connecter</a>
+        {% endif %}
+    </div>
+    <div class="cards">
     {% for picture in pictures %}
         <div class="card">
             <h2>{{ picture.nom }}</h2>
@@ -20,7 +29,7 @@
                 {% endfor %} #}
             </p>
             <div class="image">
-                <img src="{{ asset('uploads/images/' ~ picture.imageName) }}" alt="img">
+                <a class="img" href="{{path('detail',{'id': picture.id}) }}"><img src="{{ asset('uploads/images/' ~ picture.imageName) }}" alt="img"></a>
             </div>
             {# <div class="actions">
                 <a class="modifier" href="{{ path('updateDessert', {'id': picture.id}) }}">Modifier</a>
@@ -32,6 +41,7 @@
             </div> #}
         </div>
     {% endfor %}
+    </div>
 </section>
 
 {% endblock %}

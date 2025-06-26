@@ -13,11 +13,12 @@
             <div class="home-actions">
                 <a href="{{path('gallerie')}}" class="btn-main">Voir les Sabliers</a>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a href="{{path('addPicture')}}" class="btn-secondary">Ajouter une glace</a>
+                    <a href="{{path('addPicture')}}" class="btn-secondary">Ajouter un sablier</a>
                 {% else %}
                     <a href="{{ path('app_login') }}" class="btn-secondary">Se connecter</a>
                 {% endif %}
             </div>
         </div>
+        
     </section>
 {% endblock %}

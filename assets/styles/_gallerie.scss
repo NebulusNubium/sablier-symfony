@@ -1,0 +1,26 @@
+@use 'variables' as v;
+@use "mixins" as m;
+
+#liste {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+    .gallerie-title{
+        .btn-secondary{
+            @include m.bouton;
+        }
+    }
+}
+.cards{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem;
+    .card {
+        @include m.card;
+    }
+}
