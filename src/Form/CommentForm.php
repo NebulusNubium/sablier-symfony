@@ -16,14 +16,6 @@ class CommentForm extends AbstractType
     {
         $builder
             ->add('content')
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
-            ])
-            ->add('picture', EntityType::class, [
-                'class' => Pictures::class,
-                'choice_label' => 'id',
-            ])
         ;
     }
 

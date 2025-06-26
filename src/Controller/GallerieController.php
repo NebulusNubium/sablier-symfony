@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Comments;
+use App\Form\CommentForm;
 use App\Repository\PicturesRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

@@ -14,6 +14,10 @@
     <p><strong>Laisser un commentaire :</strong> {{ picture.description }}</p>
     <div class="image">
     <img src="{{ asset('uploads/images/' ~ picture.imageName) }}" alt="img">
+    {% for comment in comments %}
+        <p>{{comment.content}}</p>
+        <p>par: {{comment.content.user.username}}</p>
+    {% endfor %}
 </div>
 </div>
 </section>
