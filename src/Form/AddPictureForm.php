@@ -20,6 +20,9 @@ class AddPictureForm extends AbstractType
         $builder
             ->add('nom')
             ->add('description')
+            ->add('descriptionDetaille')
+            ->add('valeur')
+            ->add('specificite')
             ->add('imageFile', FileType::class, [
                 'required' => false,
                 'mapped' => true,

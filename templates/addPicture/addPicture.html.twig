@@ -15,7 +15,18 @@
         {{ form_label(addPictureForm.description) }}
         {{ form_widget(addPictureForm.description, {'attr': {'class': 'input'}}) }}
     </div>
-
+    <div class="form-group">
+        {{ form_label(addPictureForm.descriptionDetaille) }}
+        {{ form_widget(addPictureForm.descriptionDetaille, {'attr': {'class': 'input'}}) }}
+    </div>
+        <div class="form-group">
+        {{ form_label(addPictureForm.valeur) }}
+        {{ form_widget(addPictureForm.valeur, {'attr': {'class': 'input'}}) }}
+    </div>
+        <div class="form-group">
+        {{ form_label(addPictureForm.specificite) }}
+        {{ form_widget(addPictureForm.specificite, {'attr': {'class': 'input'}}) }}
+    </div>
 
     <div class="form-group">
         {{ form_label(addPictureForm.imageFile) }}

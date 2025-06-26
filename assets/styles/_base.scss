@@ -22,13 +22,13 @@ a{
     }
 // Formulaires (inscription, login, ajout glace)
 .registration-form,
-.login-form {
+.login-form, .picture-form {
     max-width: 500px;
     margin: 2rem auto;
     padding: 2rem;
     border-radius: 16px;
-    box-shadow: 0 6px 12px rgba(243, 156, 18, 0.2);
-    font-family: "Comic Sans MS", cursive, sans-serif;
+    box-shadow: 0 6px 12px v.$grey;
+    font-family: "Roboto Slab", sans-serif;
     background: v.$colorSecondary;
 }
 

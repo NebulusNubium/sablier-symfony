@@ -47,6 +47,15 @@ class Pictures
     #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'picture')]
     private Collection $comments;
 
+    #[ORM\Column]
+    private ?int $valeur = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $specificite = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $descriptionDetaille = null;
+
 
     public function __construct()
     {
@@ -149,6 +158,42 @@ class Pictures
     public function getImageName(): ?string
     {
         return $this->imageName;
+    }
+
+    public function getValeur(): ?int
+    {
+        return $this->valeur;
+    }
+
+    public function setValeur(int $valeur): static
+    {
+        $this->valeur = $valeur;
+
+        return $this;
+    }
+
+    public function getSpecificite(): ?string
+    {
+        return $this->specificite;
+    }
+
+    public function setSpecificite(string $specificite): static
+    {
+        $this->specificite = $specificite;
+
+        return $this;
+    }
+
+    public function getDescriptionDetaille(): ?string
+    {
+        return $this->descriptionDetaille;
+    }
+
+    public function setDescriptionDetaille(string $descriptionDetaille): static
+    {
+        $this->descriptionDetaille = $descriptionDetaille;
+
+        return $this;
     }
 
 }
