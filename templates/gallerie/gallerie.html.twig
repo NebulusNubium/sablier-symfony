@@ -6,9 +6,7 @@
 
 <section id="liste">
     <div class="gallerie-title">
-        <h1>Notre Collection</h1>
-        <p>chaque objet a sa page détaillée en cliquant dessus</p>
-        <p>bonus: faire un filtre et un systeme de notation</p>
+        <h1>Notre Collection Communautaire</h1>
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <a href="{{path('addPicture')}}" class="btn-secondary">Ajouter un sablier</a>
         {% else %}

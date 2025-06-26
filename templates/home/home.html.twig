@@ -6,10 +6,7 @@
     <section class="home-section">
         <h1 class="home-title">Bienvenue sur Sablier !</h1>
         <div class="home-container">
-
             <p class="home-subtitle">Présentation du site !</p>
-            <p>4derniers produits ajoutés</p>
-
             <div class="home-actions">
                 <a href="{{path('gallerie')}}" class="btn-main">Voir les Sabliers</a>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -19,6 +16,18 @@
                 {% endif %}
             </div>
         </div>
-        
+        <h2>Les derniers ajouts de la communauté:</h2>
+        <div class="cards">
+            {% for latest in latests %}
+                <div class="card">
+                    <h2>{{ latest.nom }}</h2>
+                    <p><strong>Ajouté par :</strong> {{ latest.user.username}}</p>
+                    <p><strong>Description :</strong> {{ latest.description }}</p>
+                    <div class="image">
+                        <a class="img" href="{{path('detail',{'id': latest.id}) }}"><img src="{{ asset('uploads/images/' ~ latest.imageName) }}" alt="img"></a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </section>
 {% endblock %}
