@@ -1,9 +1,7 @@
 <?php
 
 namespace App\Entity;
-
 use DateTimeImmutable;
-use App\Entity\Comments;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PicturesRepository;
@@ -39,7 +37,14 @@ class Pictures
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $descriptionDetaille = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $specificite = null;
+
+    #[ORM\Column]
+    private ?int $valeur = null;
 
     /**
      * @var Collection<int, Comments>
@@ -47,20 +52,9 @@ class Pictures
     #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'picture')]
     private Collection $comments;
 
-    #[ORM\Column]
-    private ?int $valeur = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $specificite = null;
-
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $descriptionDetaille = null;
-
-
     public function __construct()
     {
         $this->comments = new ArrayCollection();
-        // $this->created_at = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -100,37 +94,6 @@ class Pictures
     public function setUser(?User $user): static
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-
-    /**
-     * @return Collection<int, Comments>
-     */
-    public function getComments(): Collection
-    {
-        return $this->comments;
-    }
-
-    public function addComment(Comments $comment): static
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments->add($comment);
-            $comment->setPicture($this);
-        }
-
-        return $this;
-    }
-
-    public function removeComment(Comments $comment): static
-    {
-        if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
-            if ($comment->getPicture() === $this) {
-                $comment->setPicture(null);
-            }
-        }
 
         return $this;
     }
@@ -192,6 +155,36 @@ class Pictures
     public function setDescriptionDetaille(string $descriptionDetaille): static
     {
         $this->descriptionDetaille = $descriptionDetaille;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comments>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comments $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setPicture($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comments $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getPicture() === $this) {
+                $comment->setPicture(null);
+            }
+        }
 
         return $this;
     }

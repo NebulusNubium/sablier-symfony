@@ -14,32 +14,33 @@ class Comments
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'comments')]
-    private ?Pictures $picture = null;
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $content = null;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $content = null;
-
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
+
+    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Pictures $picture = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPicture(): ?Pictures
+    public function getContent(): ?string
     {
-        return $this->picture;
+        return $this->content;
     }
 
-    public function setPicture(?Pictures $picture): static
+    public function setContent(string $content): static
     {
-        $this->picture = $picture;
+        $this->content = $content;
 
         return $this;
     }
@@ -56,18 +57,6 @@ class Comments
         return $this;
     }
 
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(string $content): static
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->created_at;
@@ -76,6 +65,18 @@ class Comments
     public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getPicture(): ?Pictures
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?Pictures $picture): static
+    {
+        $this->picture = $picture;
 
         return $this;
     }
