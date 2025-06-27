@@ -1,24 +1,28 @@
 @use 'variables' as v;
 
 //Nav Barre
+
 nav {
-    background-image: url(../../public/bg2.png);
+    background: url(../../public/bg3.png);
     background-position: center;
     object-fit: cover;
     background-repeat: repeat;
-    padding: 1rem 0;
-    margin-bottom: 2rem;
+    top: 0;
+    position: fixed;
+    width: 100%;
+    z-index: 10;
     ul {
         list-style: none;
         display: flex;
         justify-content: space-around;
+        margin: 0;
     }
     a{
         font-family: "Playfair Display";
-        font-size: 1.5rem;
+        font-size: 1rem;
         position: relative;
         display: inline-block;
-        padding: 0.5rem 1rem;
+        padding: 0.5rem 0.5rem;
         color: #F5E3B3;
         text-decoration: none;
         border-radius: 4px;
