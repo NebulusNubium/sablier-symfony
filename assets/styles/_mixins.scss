@@ -61,7 +61,9 @@
 
 
 @mixin card () {
-        background: v.$colorPrimary;
+        background-image: url(../../public/bg-card.png);
+        background-position: center;
+        object-fit: cover;
         color: v.$grey;
         border-radius: 12px;
         padding: 1rem;

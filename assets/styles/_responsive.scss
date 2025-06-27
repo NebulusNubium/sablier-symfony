@@ -1,0 +1,11 @@
+@media screen and (max-width: 600px) {
+    .home-container {
+        height: 40vh;
+    }
+    .home-actions{
+        flex-direction: column;
+    }
+    nav>ul {
+        padding: 0;
+    }
+}

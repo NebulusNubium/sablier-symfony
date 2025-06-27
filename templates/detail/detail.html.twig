@@ -10,15 +10,44 @@
     <p><strong>Description détaillée :</strong> {{ picture.description }}</p>
     <p><strong>Spécificité :</strong> {{ picture.specificite }}</p>
     <p><strong>Valeur estimée :</strong> {{ picture.valeur }}</p>
-    <p><strong>Commentaires :</strong> {{ picture.description }}</p>
-    <p><strong>Laisser un commentaire :</strong> {{ picture.description }}</p>
     <div class="image">
-    <img src="{{ asset('uploads/images/' ~ picture.imageName) }}" alt="img">
-    {% for comment in comments %}
-        <p>{{comment.content}}</p>
-        <p>par: {{comment.content.user.username}}</p>
-    {% endfor %}
-</div>
+        <img src="{{ asset('uploads/images/' ~ picture.imageName) }}" alt="img">
+    </div>
+    <p><strong>Commentaires :</strong> {{ picture.description }}</p>
+    <h3>Commentaires:</h3>
+    <div class="comments">
+        {% for comment in comments %}
+            <div class="comment">
+                <strong>{{ comment.user.username }}</strong>
+                <small>{{ comment.createdAt|date('d/m/Y H:i') }}</small>
+                <p>{{ comment.content }}</p>
+            </div>
+        {% else %}
+            <p>Aucun commentaire pour le moment.</p>
+        {% endfor %}
+    </div>
+
+    <section>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {{ form_start(CommentForm, { attr: { novalidate: 'novalidate', class: 'comment-form' } }) }}
+
+                <div class="form-group">
+                    {{ form_label(CommentForm.content) }}
+                    {{ form_widget(CommentForm.content, { attr: { class: 'input', rows: 4, placeholder: 'Votre commentaire...' } }) }}
+                    {{ form_errors(CommentForm.content) }}
+                </div>
+
+                <button type="submit" class="submit">Envoyer</button>
+                {{ form_end(CommentForm) }}
+        {% else %}
+            <p>
+            Vous devez être 
+            <a href="{{ path('app_login') }}">connecté·e</a> 
+            pour laisser un commentaire.
+            </p>
+        {% endif %}
+    </section>
+
 </div>
 </section>
 

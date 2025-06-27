@@ -18,16 +18,15 @@ final class DetailController extends AbstractController
     public function addComment(CommentsRepository $repository, Pictures $picture, Request $request, EntityManagerInterface $entityManager): Response
     {
         $comment = new Comments();
-        $comments = $repository->findAll();
+        $comments = $repository->findBy(['picture' => $picture]);
         $form = $this->createForm(CommentForm::class, $comment);
         $form->handleRequest($request);
            if ($form->isSubmitted() && $form->isValid()) {
         // 1) on récupère l'utilisateur actuellement connecté
         $user = $this->getUser();
-        $picture = $request->get('id','valeurParDefaut');
-
         // 2) on le lie à l'image avant le persist()
         $comment->setUser($user);
+        $comment->setPicture($picture);
         // 3) on persiste et flush
         $entityManager->persist($comment);
         $entityManager->flush();
