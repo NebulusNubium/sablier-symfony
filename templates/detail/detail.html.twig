@@ -6,93 +6,32 @@
 <section class="cards" id="detail">
   <div class="card">
 
-    {# Compute permissions and editMode #}
+    {# editMode? #}
     {% set canEdit = is_granted('ROLE_ADMIN') or (app.user and app.user.id == picture.user.id) %}
-    {# editMode was passed from controller #}
 
-    {# —————— Modifier link —————— #}
-    {% if canEdit %}
-      <a
-        class="modifier"
-        href="{{ path('detail', { id: picture.id, edit: 1 }) }}"
-      >
-        Modifier
-      </a>
-    {% endif %}
-
-    {# —————— Editable form —————— #}
+    {# edition: #}
     {% if canEdit and editMode %}
-      <form
-        method="post"
-        action="{{ path('picture_edit', { id: picture.id }) }}"
-        enctype="multipart/form-data"
-      >
-        <input
-          type="hidden"
-          name="_token"
-          value="{{ csrf_token('edit' ~ picture.id) }}"
-        />
-
-        {# Name #}
+      <form method="post" action="{{ path('picture_edit', { id: picture.id }) }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('edit' ~ picture.id) }}"/>
         <div class="form-group">
           <label for="picture_nom"><strong>Nom :</strong></label>
-          <input
-            id="picture_nom"
-            type="text"
-            name="nom"
-            value="{{ picture.nom }}"
-            class="input"
-            required
-          >
+          <input id="picture_nom" type="text" name="nom"  value="{{ picture.nom }}" class="input" required>
         </div>
-
-        {# Description #}
         <div class="form-group">
           <label for="picture_description"><strong>Description :</strong></label>
-          <textarea
-            id="picture_description"
-            name="description"
-            class="input"
-            rows="4"
-            required
-          >{{ picture.description }}</textarea>
+          <textarea id="picture_description" name="description" class="input" rows="4" required >{{ picture.description }}</textarea>
         </div>
-
-        {# Specificité #}
         <div class="form-group">
           <label for="picture_specificite"><strong>Spécificité :</strong></label>
-          <input
-            id="picture_specificite"
-            type="text"
-            name="specificite"
-            value="{{ picture.specificite }}"
-            class="input"
-          >
+          <input id="picture_specificite" type="text" name="specificite" value="{{ picture.specificite }}" class="input" >
         </div>
-
-        {# Valeur #}
         <div class="form-group">
           <label for="picture_valeur"><strong>Valeur estimée :</strong></label>
-          <input
-            id="picture_valeur"
-            type="number"
-            step="0.01"
-            name="valeur"
-            value="{{ picture.valeur }}"
-            class="input"
-          >
+          <input id="picture_valeur" type="number" step="0.01" name="valeur" value="{{ picture.valeur }}" class="input"  >
         </div>
-
-        {# Image upload #}
         <div class="form-group">
           <label for="picture_image"><strong>Image :</strong></label>
-          <input
-            id="picture_image"
-            type="file"
-            name="imageFile"
-            accept="image/*"
-            class="input"
-          >
+          <input id="picture_image"  type="file"  name="imageFile" accept="image/*" class="input">
         </div>
 
         <button type="submit" class="btn btn-primary">
@@ -100,13 +39,13 @@
         </button>
       </form>
 
-    {# —————— Read-only view —————— #}
+    {# mode normal#}
     {% else %}
       <h2>{{ picture.nom }}</h2>
       <p><strong>Ajouté par :</strong> {{ picture.user.username }}</p>
       <p><strong>Description :</strong> {{ picture.description }}</p>
       <p><strong>Spécificité :</strong> {{ picture.specificite }}</p>
-      <p><strong>Valeur estimée :</strong> {{ picture.valeur }}</p>
+      <p><strong>Valeur estimée :</strong> {{ picture.valeur }} eur</p>
       <div class="image">
         <img
           src="{{ asset('uploads/images/' ~ picture.imageName) }}"
@@ -115,7 +54,7 @@
       </div>
     {% endif %}
 
-    {# —————— Comments —————— #}
+    {# les Commentaires #}
     <h3>Commentaires ({{ comments|length }})</h3>
     <div class="comments">
       {% for comment in comments %}
@@ -128,8 +67,6 @@
         <p>Aucun commentaire pour le moment.</p>
       {% endfor %}
     </div>
-
-    {# —————— Leave a comment —————— #}
     <section class="leave-comment">
       {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         {{ form_start(commentForm, { attr: { class: 'comment-form', novalidate: 'novalidate' } }) }}
@@ -144,7 +81,7 @@
         {{ form_end(commentForm) }}
       {% else %}
         <p>
-          Vous devez être <a href="{{ path('app_login') }}">connecté·e</a>
+          Vous devez être <a href="{{ path('app_login') }}">connecté</a>
           pour laisser un commentaire.
         </p>
       {% endif %}
