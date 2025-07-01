@@ -25,8 +25,9 @@ class Comments
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE' )]
     private ?Pictures $picture = null;
+    
 
     public function getId(): ?int
     {

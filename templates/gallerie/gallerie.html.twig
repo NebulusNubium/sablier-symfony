@@ -29,14 +29,14 @@
             <div class="image">
                 <a class="img" href="{{path('detail',{'id': picture.id}) }}"><img src="{{ asset('uploads/images/' ~ picture.imageName) }}" alt="img"></a>
             </div>
-            {# <div class="actions">
-                <a class="modifier" href="{{ path('updateDessert', {'id': picture.id}) }}">Modifier</a>
-                <form action="{{ path('deleteDessert', {'id': picture.id}) }}" method="post" onsubmit="return confirm('Confirmer la suppression?')">
+            <div class="actions">
+                <a class="modifier" href="{{ path('detail', {'id': picture.id}) }}">Modifier</a>
+                <form action="{{ path('deletePicture', {'id': picture.id}) }}" method="post" onsubmit="return confirm('Confirmer la suppression?')">
                     <input type="hidden" name="_method" value="delete">
                     <input type="hidden" name="_token" value="{{ csrf_token('SUP' ~ picture.id) }}">
                     <input type="submit" value="Supprimer" class="supprimer">
                 </form>
-            </div> #}
+            </div>
         </div>
     {% endfor %}
     </div>
