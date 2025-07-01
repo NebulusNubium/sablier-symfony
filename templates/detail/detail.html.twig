@@ -1,54 +1,155 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DetailController!{% endblock %}
+{% block title %}Détail de {{ picture.nom }}{% endblock %}
 
 {% block main %}
 <section class="cards" id="detail">
-<div class="card">
-    <h2>{{ picture.nom }}</h2>
-    <p><strong>Ajouté par :</strong> {{ picture.user.username}}</p>
-    <p><strong>Description détaillée :</strong> {{ picture.description }}</p>
-    <p><strong>Spécificité :</strong> {{ picture.specificite }}</p>
-    <p><strong>Valeur estimée :</strong> {{ picture.valeur }}</p>
-    <div class="image">
-        <img src="{{ asset('uploads/images/' ~ picture.imageName) }}" alt="img">
-    </div>
-    <p><strong>Commentaires :</strong> {{ picture.description }}</p>
-    <h3>Commentaires:</h3>
+  <div class="card">
+
+    {# Compute permissions and editMode #}
+    {% set canEdit = is_granted('ROLE_ADMIN') or (app.user and app.user.id == picture.user.id) %}
+    {# editMode was passed from controller #}
+
+    {# —————— Modifier link —————— #}
+    {% if canEdit %}
+      <a
+        class="modifier"
+        href="{{ path('detail', { id: picture.id, edit: 1 }) }}"
+      >
+        Modifier
+      </a>
+    {% endif %}
+
+    {# —————— Editable form —————— #}
+    {% if canEdit and editMode %}
+      <form
+        method="post"
+        action="{{ path('picture_edit', { id: picture.id }) }}"
+        enctype="multipart/form-data"
+      >
+        <input
+          type="hidden"
+          name="_token"
+          value="{{ csrf_token('edit' ~ picture.id) }}"
+        />
+
+        {# Name #}
+        <div class="form-group">
+          <label for="picture_nom"><strong>Nom :</strong></label>
+          <input
+            id="picture_nom"
+            type="text"
+            name="nom"
+            value="{{ picture.nom }}"
+            class="input"
+            required
+          >
+        </div>
+
+        {# Description #}
+        <div class="form-group">
+          <label for="picture_description"><strong>Description :</strong></label>
+          <textarea
+            id="picture_description"
+            name="description"
+            class="input"
+            rows="4"
+            required
+          >{{ picture.description }}</textarea>
+        </div>
+
+        {# Specificité #}
+        <div class="form-group">
+          <label for="picture_specificite"><strong>Spécificité :</strong></label>
+          <input
+            id="picture_specificite"
+            type="text"
+            name="specificite"
+            value="{{ picture.specificite }}"
+            class="input"
+          >
+        </div>
+
+        {# Valeur #}
+        <div class="form-group">
+          <label for="picture_valeur"><strong>Valeur estimée :</strong></label>
+          <input
+            id="picture_valeur"
+            type="number"
+            step="0.01"
+            name="valeur"
+            value="{{ picture.valeur }}"
+            class="input"
+          >
+        </div>
+
+        {# Image upload #}
+        <div class="form-group">
+          <label for="picture_image"><strong>Image :</strong></label>
+          <input
+            id="picture_image"
+            type="file"
+            name="imageFile"
+            accept="image/*"
+            class="input"
+          >
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+          Enregistrer les modifications
+        </button>
+      </form>
+
+    {# —————— Read-only view —————— #}
+    {% else %}
+      <h2>{{ picture.nom }}</h2>
+      <p><strong>Ajouté par :</strong> {{ picture.user.username }}</p>
+      <p><strong>Description :</strong> {{ picture.description }}</p>
+      <p><strong>Spécificité :</strong> {{ picture.specificite }}</p>
+      <p><strong>Valeur estimée :</strong> {{ picture.valeur }}</p>
+      <div class="image">
+        <img
+          src="{{ asset('uploads/images/' ~ picture.imageName) }}"
+          alt="{{ picture.nom }}"
+        >
+      </div>
+    {% endif %}
+
+    {# —————— Comments —————— #}
+    <h3>Commentaires ({{ comments|length }})</h3>
     <div class="comments">
-        {% for comment in comments %}
-            <div class="comment">
-                <strong>{{ comment.user.username }}</strong>
-                <small>{{ comment.createdAt|date('d/m/Y H:i') }}</small>
-                <p>{{ comment.content }}</p>
-            </div>
-        {% else %}
-            <p>Aucun commentaire pour le moment.</p>
-        {% endfor %}
+      {% for comment in comments %}
+        <div class="comment">
+          <strong>{{ comment.user.username }}</strong>
+          <small>{{ comment.createdAt|date('d/m/Y H:i') }}</small>
+          <p>{{ comment.content }}</p>
+        </div>
+      {% else %}
+        <p>Aucun commentaire pour le moment.</p>
+      {% endfor %}
     </div>
 
-    <section>
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                {{ form_start(CommentForm, { attr: { novalidate: 'novalidate', class: 'comment-form' } }) }}
-
-                <div class="form-group">
-                    {{ form_label(CommentForm.content) }}
-                    {{ form_widget(CommentForm.content, { attr: { class: 'input', rows: 4, placeholder: 'Votre commentaire...' } }) }}
-                    {{ form_errors(CommentForm.content) }}
-                </div>
-
-                <button type="submit" class="submit">Envoyer</button>
-                {{ form_end(CommentForm) }}
-        {% else %}
-            <p>
-            Vous devez être 
-            <a href="{{ path('app_login') }}">connecté·e</a> 
-            pour laisser un commentaire.
-            </p>
-        {% endif %}
+    {# —————— Leave a comment —————— #}
+    <section class="leave-comment">
+      {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {{ form_start(commentForm, { attr: { class: 'comment-form', novalidate: 'novalidate' } }) }}
+          <div class="form-group">
+            {{ form_label(commentForm.content) }}
+            {{ form_widget(commentForm.content, {
+              attr: { class: 'input', rows: 4, placeholder: 'Votre commentaire…' }
+            }) }}
+            {{ form_errors(commentForm.content) }}
+          </div>
+          <button type="submit" class="submit">Envoyer</button>
+        {{ form_end(commentForm) }}
+      {% else %}
+        <p>
+          Vous devez être <a href="{{ path('app_login') }}">connecté·e</a>
+          pour laisser un commentaire.
+        </p>
+      {% endif %}
     </section>
 
-</div>
+  </div>
 </section>
-
 {% endblock %}
