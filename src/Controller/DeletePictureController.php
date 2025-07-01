@@ -11,14 +11,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class DeletePictureController extends AbstractController
 {
-    #[Route('/detail/{id}', name: 'deletePicture')]
-    public function delete(Pictures $picture, Request $request, EntityManagerInterface $entityManager)
-    {
-        if($this->isCsrfTokenValid("SUP".$picture->getId(), $request->get('_token'))){
+    #[Route('/detail/{id}/delete', name: 'deletePicture', methods: ['POST'])]
+    public function delete(Pictures $picture, Request $request, EntityManagerInterface $entityManager): Response {
+        $submittedToken = $request->request->get('_token');
+
+        if ($this->isCsrfTokenValid('SUP'.$picture->getId(), $submittedToken)) {
             $entityManager->remove($picture);
             $entityManager->flush();
-            $this->addFlash("success", "La suppression a été effectuée");
-            return $this->redirectToRoute('gallerie');
+
+            $this->addFlash('success', 'La suppression a été effectuée.');
+        } else {
+            $this->addFlash('error', 'Jeton CSRF invalide. Suppression annulée.');
         }
+
+        // Always redirect back, whether success or failure
+        return $this->redirectToRoute('gallerie');
     }
 }
