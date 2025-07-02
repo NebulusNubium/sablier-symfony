@@ -21,13 +21,11 @@ final class AddPictureController extends AbstractController
         $form = $this->createForm(AddPictureForm::class, $picture);
         $form->handleRequest($request);
            if ($form->isSubmitted() && $form->isValid()) {
-        // 1) on récupère l'utilisateur actuellement connecté
-        /** @var \App\Entity\User $user */
+        // On récupère l'utilisateur actuellement connecté
         $user = $this->getUser();
 
-        // 2) on le lie à l'image avant le persist()
+        // on le lie à l'image avant le persist()
         $picture->setUser($user);
-        // 3) on persiste et flush
         $entityManager->persist($picture);
         $entityManager->flush();
 
