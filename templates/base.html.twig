@@ -34,7 +34,7 @@
         <nav>
             <ul>
                 <div class="logo">
-                    <img src="{{asset('logo.gif')}}" alt="logo">
+                    <a href="{{path('home')}}"><img src="{{asset('logo.gif')}}" alt="logo"></a>
                 </div>
                 <li><a href="{{path("home")}}">Accueil</a></li>
                 <li><a href="{{path("gallerie")}}">Gallerie</a></li>
@@ -66,8 +66,9 @@
         {% block footer %}
         <footer class="site-footer">
             <div class="footer-content">
-                <p>&copy; {{ "now"|date("Y") }} Sablier — Tous droits réservés.</p>
+                <p> {{ "now"|date("Y") }} Sablier — Tous droits réservés.</p>
                 <p>Vous pouvez nous contacter <a href="{{path('contact')}}">ici</a></p>
+                <p>Voyez <a href="{{path('policy')}}">ici pour nos mentions légales</a></p>
             </div>
         </footer>
         {% endblock %}

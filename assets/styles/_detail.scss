@@ -1,3 +1,4 @@
+@use 'variables' as v;
 #detail{
     .card{
         width: 80%;
@@ -7,5 +8,27 @@
         .image{
             width: 50%;
         }
+    }
+    #comment_form_content{
+        width: 70%;
+    }
+    .submit{
+        width: 20%;
+        margin: auto;
+    }
+    .comment{
+        background-color: v.$colorSecondary;
+        opacity: 0.9;
+        width: 20%;
+        margin: auto;
+        padding: 0.5rem;
+        border-radius: 15px;
+        color: v.$black;
+        p{
+            font-style: italic;
+        }
+    }
+    .comments{
+        margin-bottom: 2rem;
     }
 }
