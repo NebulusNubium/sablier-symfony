@@ -54,6 +54,8 @@
     font-size: 1.2rem;
     color: v.$colorSecondary;
     margin-bottom: 2rem;
+    position: relative;
+    z-index: 9999;
 }
 
 .home-actions {

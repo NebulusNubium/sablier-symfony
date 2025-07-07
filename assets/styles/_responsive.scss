@@ -1,11 +1,38 @@
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 750px) {
+    .home-section{
+        padding: 0rem 1rem;
+        width: 85%;
+    }
+    .home-subtitle{
+        font-size: 1rem;
+    }
     .home-container {
         height: 40vh;
     }
     .home-actions{
         flex-direction: column;
     }
-    nav>ul {
+    nav {
+        flex-direction: column;
+        ul{
         padding: 0;
+        .logo{
+            width: 10%;
+        }
+        }
+        a{
+            font-size: 1rem;
+            }
+    }
+    #detail{
+        .submit, .submit-button{
+            width: 40%;
+        }
+        .card{
+            width: 90%;
+        }
+        .input{
+            width: 90%;
+        }
     }
 }

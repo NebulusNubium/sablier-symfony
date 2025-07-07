@@ -54,7 +54,7 @@
 
                 {# Visible uniquement pour les admins #}
                 {% if is_granted('ROLE_ADMIN') %}
-                    <li class="dashboard"><a href="{{path('admin')}}">AdminDashboard</a></li>
+                    <li class="dashboard"><a href="{{path('admin')}}">Admin</a></li>
                 {% endif %}
             </ul>
         </nav>
