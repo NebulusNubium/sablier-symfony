@@ -32,3 +32,16 @@
         margin-bottom: 2rem;
     }
 }
+
+.note-container{
+    display: flex;
+    margin: auto;
+    gap: 1rem;
+    width: 20%;
+    a>img{width: 100%;
+    border-radius: 50%;
+    border: 5px solid black;}
+    a>img:hover{
+        border-color: v.$colorSecondary;
+    }
+}

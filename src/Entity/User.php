@@ -39,9 +39,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'user')]
     private Collection $comments;
 
+    /**
+     * @var Collection<int, Notes>
+     */
+    #[ORM\ManyToMany(targetEntity: Notes::class, mappedBy: 'user')]
+    private Collection $sablier;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->sablier = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -142,6 +149,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($comment->getUser() === $this) {
                 $comment->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notes>
+     */
+    public function getSablier(): Collection
+    {
+        return $this->sablier;
+    }
+
+    public function addSablier(Notes $sablier): static
+    {
+        if (!$this->sablier->contains($sablier)) {
+            $this->sablier->add($sablier);
+            $sablier->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSablier(Notes $sablier): static
+    {
+        if ($this->sablier->removeElement($sablier)) {
+            $sablier->removeUser($this);
         }
 
         return $this;

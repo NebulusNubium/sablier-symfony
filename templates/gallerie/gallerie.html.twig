@@ -12,6 +12,11 @@
         {% else %}
             <a href="{{ path('app_login') }}" class="btn-secondary">Se connecter</a>
         {% endif %}
+        <ul>
+            <a class="btn-secondary" href="{{path('gallerie')}}">Trier par valeur décroissante</a>  
+            <a class="btn-secondary" href="{{path('gallerie')}}">Trier par ordre alphabétique</a>   
+            <a class="btn-secondary" href="{{path('gallerie')}}">Trier par défaut (le plus récent)</a>    
+        </ul>
     </div>
     <div class="cards">
     {% for picture in pictures %}
@@ -19,6 +24,7 @@
             <h2>{{ picture.nom }}</h2>
             <p><strong>Ajouté par :</strong> {{ picture.user.username}}</p>
             <p><strong>Description :</strong> {{ picture.description }}</p>
+            <h3>Note moyenne :{{ avg[picture.id]|default(0)}}★</h3>
             {# <p><strong>Les tags :</strong>
                 {% for tag in picture.tags %}
                     {{ topping.toppingType }}{% if not loop.last %}, {% endif %}

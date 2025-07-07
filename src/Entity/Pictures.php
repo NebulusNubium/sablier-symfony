@@ -52,9 +52,16 @@ class Pictures
     #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'picture')]
     private Collection $comments;
 
+    /**
+     * @var Collection<int, Notes>
+     */
+    #[ORM\ManyToMany(targetEntity: Notes::class, mappedBy: 'sablier')]
+    private Collection $notes;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -184,6 +191,33 @@ class Pictures
             if ($comment->getPicture() === $this) {
                 $comment->setPicture(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notes>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Notes $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->addSablier($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Notes $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            $note->removeSablier($this);
         }
 
         return $this;

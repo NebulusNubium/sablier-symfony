@@ -2,21 +2,23 @@
 // src/Controller/DetailController.php
 namespace App\Controller;
 
+use App\Entity\Notes;
 use App\Entity\Comments;
 use App\Entity\Pictures;
 use App\Form\CommentForm;
 use App\Repository\CommentsRepository;
+use App\Repository\NotesRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\{Request, Response};
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class DetailController extends AbstractController
 {
     #[Route('/detail/{id}', name: 'detail', methods: ['GET', 'POST'])]
-    public function detail(Pictures $picture,Request $request, CommentsRepository $commentsRepository, EntityManagerInterface $entityManager): Response {
+    public function detail(NotesRepository $notesRepository, Pictures $picture,Request $request, CommentsRepository $commentsRepository, EntityManagerInterface $entityManager): Response {
         // edit mode
         $editMode = $request->query->get('edit') === '1';
 
@@ -36,11 +38,31 @@ class DetailController extends AbstractController
             $this->addFlash('success', 'Commentaire enregistré !');
             return $this->redirectToRoute('detail', ['id' => $picture->getId()]);
         }
+
+        // Les notes:
+
+    $avg = $entityManager
+    ->getRepository(Notes::class)
+    ->findAverageForPicture($picture);
+    $note = new Notes();
+    $noteValue = $request->query->get('note');
+        if ($noteValue == null ) {
+            $note
+                ->addUser($this->getUser())
+                ->addPicture($picture)
+                ->setNote($noteValue);                
+            $entityManager->persist($note);
+            $entityManager->flush();
+        }
+
+
         return $this->render('detail/detail.html.twig', [
             'picture'     => $picture,
             'comments'    => $comments,
             'commentForm' => $form->createView(),
             'editMode'    => $editMode,
+            'note'=> $note,
+            'avg'=>$avg,
         ]);
     }
 
