@@ -43,12 +43,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Notes>
      */
     #[ORM\ManyToMany(targetEntity: Notes::class, mappedBy: 'user')]
-    private Collection $sablier;
+    private Collection $note;
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
-        $this->sablier = new ArrayCollection();
+        $this->note    = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -157,25 +157,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Notes>
      */
-    public function getSablier(): Collection
+    public function getNote(): Collection
     {
-        return $this->sablier;
+        return $this->note;
     }
 
-    public function addSablier(Notes $sablier): static
+    public function addNote(Notes $note): static
     {
-        if (!$this->sablier->contains($sablier)) {
-            $this->sablier->add($sablier);
-            $sablier->addUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSablier(Notes $sablier): static
-    {
-        if ($this->sablier->removeElement($sablier)) {
-            $sablier->removeUser($this);
+        if (!$this->note->contains($note)) {
+            $this->note->add($note);
+            $note->addUser($this);
         }
 
         return $this;

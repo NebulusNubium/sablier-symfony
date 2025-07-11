@@ -29,6 +29,7 @@ class NotesRepository extends ServiceEntityRepository
 
         return $avg !== null ? (float) $avg : 0.0;
     }
+
 //    /**
 //     * @return Notes[] Returns an array of Notes objects
 //     */

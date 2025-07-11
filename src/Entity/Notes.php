@@ -8,7 +8,17 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: NotesRepository::class)]
+#[ORM\Table(
+    name: 'notes',
+    uniqueConstraints: [
+        new ORM\UniqueConstraint(
+            name: 'uniq_user_picture',
+            columns: ['user_id','picture_id']
+        )
+    ]
+)]
 class Notes
+
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -80,12 +90,12 @@ class Notes
     /**
      * @return Collection<int, Pictures>
      */
-    public function getpicture(): Collection
+    public function getPicture(): Collection
     {
         return $this->picture;
     }
 
-    public function addpicture(Pictures $picture): static
+    public function addPicture(Pictures $picture): static
     {
         if (!$this->picture->contains($picture)) {
             $this->picture->add($picture);

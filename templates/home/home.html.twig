@@ -7,6 +7,8 @@
         <h1 class="home-title">Bienvenue sur Sablier !</h1>
         <div class="home-container">
             <p class="home-subtitle">C'est LA plateforme incontournable dédiée aux passionnés de sabliers! Découvrez une collection unique rassemblant des pièces anciennes, contemporaines, artisanales ou design ABSOLUMENT PAS fictive! Rejoignez une communauté d’amateurs partageant conseils d’entretien, astuces pour dénicher des raretés et histoires fascinantes sur ces beaux instruments. <br> <br> Profitez d’un espace d’échange convivial, de guides d’authentification et de valorisation, et d’événements exclusifs. Explorez, collectionnez et partagez sabliers dans la gallerie. Quel que soit votre style, Sablier sublimera votre passion pour le temps en sable.</p>
+            <p>{{HomeMessage}}</p>
+            <p>{{dateAnniv}}</p>
             <div class="home-actions">
                 <a href="{{path('gallerie')}}" class="btn-main">Voir les Sabliers</a>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -24,7 +26,7 @@
                     <p><strong>Ajouté par :</strong> {{ latest.user.username}}</p>
                     <p><strong>Description :</strong> {{ latest.description }}</p>
                     <div class="image">
-                        <a class="img" href="{{path('detail',{'id': latest.id}) }}"><img src="{{ asset('uploads/images/' ~ latest.imageName) }}" alt="img"></a>
+                        <a class="img" href="{{ path('detail', {'picture': latest.id}) }}"><img src="{{ asset('uploads/images/' ~ latest.imageName) }}" alt="img"></a>
                     </div>
                 </div>
             {% endfor %}

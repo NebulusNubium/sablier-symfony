@@ -2,106 +2,78 @@
 // src/Controller/DetailController.php
 namespace App\Controller;
 
-use App\Entity\Notes;
 use App\Entity\Comments;
+use App\Entity\Notes;
 use App\Entity\Pictures;
 use App\Form\CommentForm;
 use App\Repository\CommentsRepository;
 use App\Repository\NotesRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\{Request, Response};
+use Symfony\Component\Routing\Annotation\Route;
 
 class DetailController extends AbstractController
 {
-    #[Route('/detail/{id}', name: 'detail', methods: ['GET', 'POST'])]
-    public function detail(NotesRepository $notesRepository, Pictures $picture,Request $request, CommentsRepository $commentsRepository, EntityManagerInterface $entityManager): Response {
-        // edit mode
-        $editMode = $request->query->get('edit') === '1';
-
-        // les commentaires
-        $comment   = new Comments();
-        $comments  = $commentsRepository->findBy(['picture' => $picture]);
-        $form      = $this->createForm(CommentForm::class, $comment);
+    #[Route('/detail/{picture}', name: 'detail', methods: ['GET','POST'])]
+    public function detail(
+        Pictures               $picture,
+        Request                $request,
+        CommentsRepository     $commentsRepository,
+        NotesRepository        $notesRepository,
+        EntityManagerInterface $entityManager
+    ): Response {
+        // 1) Handle comments (unchanged) …
+        $comment  = new Comments();
+        $form     = $this->createForm(CommentForm::class, $comment);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $comment
                 ->setUser($this->getUser())
-                ->setPicture($picture);
+                ->setPicture($picture)
+            ;
             $entityManager->persist($comment);
             $entityManager->flush();
-
-            $this->addFlash('success', 'Commentaire enregistré !');
-            return $this->redirectToRoute('detail', ['id' => $picture->getId()]);
+            $this->addFlash('success','Commentaire enregistré !');
+            return $this->redirectToRoute('detail',['picture'=>$picture->getId()]);
         }
+        $comments = $commentsRepository->findBy(['picture'=>$picture]);
 
-        // Les notes:
+        // 2) Compute average note
+        $avg = $notesRepository->findAverageForPicture($picture);
 
-    $avg = $entityManager
-    ->getRepository(Notes::class)
-    ->findAverageForPicture($picture);
-    $note = new Notes();
-    $noteValue = $request->query->get('note');
-        if ($noteValue == null ) {
-            $note
-                ->addUser($this->getUser())
-                ->addPicture($picture)
-                ->setNote($noteValue);                
-            $entityManager->persist($note);
+        // 3) Process vote if any
+        $noteValue = $request->query->get('note');
+        if ($noteValue !== null) {
+            $existing = $notesRepository->findOneBy([
+                'user'    => $this->getUser(),
+                'picture' => $picture,
+            ]);
+
+            if ($existing) {
+                $existing->setNote($noteValue);
+                $this->addFlash('info','Votre note a été mise à jour.');
+            } else {
+                $newNote = new Notes();
+                $newNote
+                    ->addUser($this->getUser())
+                    ->addPicture($picture)
+                    ->setNote($noteValue)
+                ;
+                $entityManager->persist($newNote);
+                $this->addFlash('success','Merci pour votre vote !');
+            }
             $entityManager->flush();
+
+            return $this->redirectToRoute('detail',['picture'=>$picture->getId()]);
         }
 
-
+        // 4) Render
         return $this->render('detail/detail.html.twig', [
             'picture'     => $picture,
             'comments'    => $comments,
             'commentForm' => $form->createView(),
-            'editMode'    => $editMode,
-            'note'=> $note,
-            'avg'=>$avg,
+            'avg'         => $avg,
         ]);
-    }
-
-    #[Route('/detail/{id}/edit', name: 'picture_edit', methods: ['POST'])]
-    public function edit(Pictures $picture, Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger): Response 
-    {
-        // CSRF check
-        $submittedToken = $request->request->get('_token');
-        if (!$this->isCsrfTokenValid('edit'.$picture->getId(), $submittedToken)) {
-            return $this->redirectToRoute('detail', ['id' => $picture->getId()]);
-        }
-
-        // champs Update
-        $picture
-            ->setNom($request->request->get('nom'))
-            ->setDescription($request->request->get('description'))
-            ->setSpecificite($request->request->get('specificite'))
-            ->setValeur($request->request->get('valeur'))
-        ;
-
-        // image
-        if ($imageFile = $request->files->get('imageFile')) {
-            $orig  = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-            $safe  = $slugger->slug($orig);
-            $name  = $safe.'-'.uniqid().'.'.$imageFile->guessExtension();
-            try {
-                $imageFile->move(
-                    $this->getParameter('pictures_directory'),
-                    $name
-                );
-                $picture->setImageName($name);
-            } catch (FileException) {
-                $this->addFlash('error', 'Erreur lors de l’upload de l’image.');
-            }
-        }
-
-        $entityManager->flush();
-        $this->addFlash('success', 'Modifications enregistrées.');
-
-        return $this->redirectToRoute('detail', ['id' => $picture->getId()]);
     }
 }
