@@ -10,8 +10,8 @@
     {% set canEdit = is_granted('ROLE_ADMIN') or (app.user and app.user.id == picture.user.id) %}
 
     {# edition: #}
-    {% if canEdit and editMode %}
-      <form method="post" action="{{ path('picture_edit', { id: picture.id }) }}">
+    {% if canEdit and app.request.query.get('edit') == '1'  %}
+      <form method="post" action="{{ path('detail', { 'picture': picture.id }) }}">
         <input type="hidden" name="_token" value="{{ csrf_token('edit' ~ picture.id) }}"/>
         <div class="form-group">
           <label for="picture_nom"><strong>Nom :</strong></label>
@@ -55,11 +55,11 @@
       </div>
       <div class="note-container">
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-          <a class="note" href="{{ path('detail', { id: picture.id, note: 1 }) }}">1<img src="{{asset('logo.gif')}}" alt=""></a>
-          <a class="note" href="{{ path('detail', { id: picture.id, note: 2 }) }}">2<img src="{{asset('logo.gif')}}" alt=""></a>
-          <a class="note" href="{{ path('detail', { id: picture.id, note: 3 }) }}">3<img src="{{asset('logo.gif')}}" alt=""></a>
-          <a class="note" href="{{ path('detail', { id: picture.id, note: 4 }) }}">4<img src="{{asset('logo.gif')}}" alt=""></a>
-          <a class="note" href="{{ path('detail', { id: picture.id, note: 5 }) }}">5<img src="{{asset('logo.gif')}}" alt=""></a>
+          <a class="note" href="{{ path('detail', { 'picture': picture.id, note: 1 }) }}">1<img src="{{asset('logo.gif')}}" alt=""></a>
+          <a class="note" href="{{ path('detail', { 'picture': picture.id, note: 2 }) }}">2<img src="{{asset('logo.gif')}}" alt=""></a>
+          <a class="note" href="{{ path('detail', { 'picture': picture.id, note: 3 }) }}">3<img src="{{asset('logo.gif')}}" alt=""></a>
+          <a class="note" href="{{ path('detail', { 'picture': picture.id, note: 4 }) }}">4<img src="{{asset('logo.gif')}}" alt=""></a>
+          <a class="note" href="{{ path('detail', { 'picture': picture.id, note: 5 }) }}">5<img src="{{asset('logo.gif')}}" alt=""></a>
         {% else %}
           <p><a href="{{ path('app_login') }}">Connectez-vous</a> pour noter.</p>
         {% endif %}

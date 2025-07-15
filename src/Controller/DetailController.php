@@ -58,9 +58,9 @@ class DetailController extends AbstractController
                 $newNote
                     ->addUser($this->getUser())
                     ->addPicture($picture)
-                    ->setNote($noteValue)
-                ;
+                    ->setNote($noteValue);
                 $entityManager->persist($newNote);
+                $entityManager->flush();
                 $this->addFlash('success','Merci pour votre vote !');
             }
             $entityManager->flush();
