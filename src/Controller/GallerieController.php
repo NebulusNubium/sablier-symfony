@@ -25,6 +25,7 @@ final class GallerieController extends AbstractController
         foreach ($pictures as $pic) {
             $avg[$pic->getId()] = $notesRepo->findAverageForPicture($pic);
         }
+        // dd($pictures);
         return $this->render('gallerie/gallerie.html.twig', [
         'pictures'=>$pictures,
         'avg'=>$avg,
